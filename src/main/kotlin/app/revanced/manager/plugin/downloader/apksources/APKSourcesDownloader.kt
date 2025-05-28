@@ -6,7 +6,6 @@ import android.net.Uri
 import app.revanced.manager.plugin.downloader.webview.WebViewDownloader
 
 val apkSourcesDownloader = WebViewDownloader { packageName, version ->
-    // Define sources in order of preference (most reliable first)
     val sources = listOf(
         SourceInfo("APKPure") { pkg, ver ->
             with(Uri.Builder()) {

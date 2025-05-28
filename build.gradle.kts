@@ -7,10 +7,6 @@ plugins {
 
 dependencies {
     compileOnly(libs.plugin.api)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.gson)
-    implementation(libs.okhttp)
-    implementation(libs.jsoup)
 }
 
 android {
