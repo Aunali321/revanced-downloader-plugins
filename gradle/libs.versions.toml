@@ -2,9 +2,16 @@
 plugin-api = "1.0.0"
 android-gradle-plugin = "8.7.3"
 kotlin = "2.1.0"
+retrofit = "2.9.0"
+okhttp = "4.12.0"
+jsoup = "1.17.2"
 
 [libraries]
 plugin-api = { group = "app.revanced", name = "revanced-manager-downloader-api", version.ref = "plugin-api" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }

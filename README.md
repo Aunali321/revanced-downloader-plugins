@@ -58,38 +58,59 @@
    Continuing the legacy of Vanced
 </p>
 
-# 👋🔌 ReVanced Manager downloader template
+# 🔍 ReVanced Manager APK Sources Downloader
 
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/ReVanced/revanced-manager-downloader-template/release.yml)
 ![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)
 
-Template repository for ReVanced Manager downloader plugins.
+A ReVanced Manager downloader plugin that fetches APKs from APKMirror, APKPure, and APKCombo.
 
 ## ❓ About
 
-This is a template to create a new ReVanced Manager downloader repository. An example implementation is included.
+This is a ReVanced Manager downloader plugin that allows users to download APKs from multiple popular sources:
 
-##  🚀 Get started
+- APKMirror
+- APKPure
+- APKCombo
 
-To start using this template, follow these steps:
+The plugin automatically tries each source in order until it finds a matching APK for the requested package name and version.
 
-1. [Create a new repository using this template](https://github.com/new?template_name=revanced-manager-downloader-template&template_owner=ReVanced)
-2. Set up the [build.gradle.kts](build.gradle.kts) file (Specifically, the [package nme](build.gradle.kts#L21).
-3. Update dependencies in the [libs.versions.toml](gradle/libs.versions.toml) file
-4. [Create a pass-phrased GPG master key and subkey](https://mikeross.xyz/create-gpg-key-pair-with-subkeys/)
-   1. Add the private key as a secret named [GPG_PRIVATE_KEY](.github/workflows/release.yml#L51) to your repository
-   2. Add the passphrase as a secret named [GPG_PASSPHRASE](.github/workflows/release.yml#L52) to your repository
-   3. Add the fingerprint of the GPG subkey as a variable named [GPG_FINGERPRINT](.github/workflows/release.yml#L53)
-   to your repository
-5. [Generate a keystore](https://developer.android.com/studio/publish/app-signing#generate-key)
-   1. Add the Base64 encoded key store as a secret named [KEYSTORE](.github/workflows/release.yml#L57) to your repository
-   2. Add the keystore password as a secret named [KEYSTORE_PASSWORD](.github/workflows/release.yml#L62) to your repository
-   3. Add the keystore entry alias as a secret named [KEYSTORE_ENTRY_ALIAS](.github/workflows/release.yml#L63) to your repository
-   4. Add the keystore entry password as a secret named [KEYSTORE_ENTRY_PASSWORD](.github/workflows/release.yml#L64) to your repository
-7. Set up the [README.md](README.md) file[^1] (e.g, title, description, license, summary),
-the [issue templates](.github/ISSUE_TEMPLATE)[^2] and the [contribution guidelines](CONTRIBUTING.md)[^3]
+## 🚀 Features
 
-🎉 You are now ready to develop and release a ReVanced Manager downloader!
+- **Multi-source support**: Fetches APKs from APKMirror, APKPure, and APKCombo
+- **Automatic fallback**: If one source fails, the plugin automatically tries the next source
+- **Version selection**: Supports downloading specific versions or the latest version
+- **Error handling**: Gracefully handles errors with appropriate error messages
+- **APK verification**: Verifies APK integrity after download
+- **Modular architecture**: Easy to add new sources in the future
+
+## 🧩 Implementation Details
+
+### Sources
+
+1. **APKMirror**
+   - Searches for apps by package name
+   - Navigates through search results to find the correct app
+   - Handles version selection and download
+   - Bypasses anti-scraping measures
+
+2. **APKPure**
+   - Provides an alternative source for APKs
+   - Supports version selection
+   - Handles download initiation
+
+3. **APKCombo**
+   - Third fallback option for APK downloads
+   - Supports searching and version selection
+   - Handles download links extraction
+
+### Technical Implementation
+
+- Uses WebView for navigating through sources
+- Implements Jsoup for HTML parsing
+- Uses Retrofit/OkHttp for direct download links
+- Implements coroutines for asynchronous operations
+- Provides download progress tracking
 
 [^1]: [Example README.md file](https://github.com/ReVanced/revanced-manager/blob/main/README.md)
 [^2]: [Example issue templates](https://github.com/ReVanced/revanced-manager/tree/main/.github/ISSUE_TEMPLATE)
@@ -97,17 +118,22 @@ the [issue templates](.github/ISSUE_TEMPLATE)[^2] and the [contribution guidelin
 
 ## 🧑‍💻 Usage
 
-To develop and release ReVanced Manager downloader using this template, some things need to be considered:
+### For Users
 
-- Development starts in feature branches. Once a feature branch is ready, it is squashed and merged into the `dev` branch
-- The `dev` branch is merged into the `main` branch once it is ready for release
-- Semantic versioning is used to version ReVanced Manager downloader.
-- Semantic commit messages are used for commits
-- Commits on the `dev` branch and `main` branch are automatically released
-via the [release.yml](.github/workflows/release.yml) workflow, which is also responsible for generating the changelog
-and updating the version of ReVanced Manager downloader. It is triggered by pushing to the `dev` or `main` branch.
-The workflow uses the `publish` task to publish the release.
-- The `publish` task depends on the `assembleRelease` task, so it will be run automatically when publishing a release.
+1. Install the APK Sources Downloader plugin in ReVanced Manager
+2. When patching an app, select this plugin as the download source
+3. The plugin will automatically search for the app across all sources
+4. If a specific version is requested, the plugin will attempt to find that version
+5. The download will begin automatically once the APK is found
+
+### For Developers
+
+To extend this plugin with new sources:
+
+1. Implement the `APKSource` interface
+2. Add your new source to the sources list in `APKSourcesDownloader.kt`
+3. Ensure proper error handling and logging
+4. Follow the existing pattern for WebView navigation and download handling
 
 ## 📚 Everything else
 
@@ -135,11 +161,11 @@ Follow the steps below to build ReVanced Manager downloader template:
 > gpr.key = key
 > ```
 
-## 📜 Licence
+## 📜 License
 
-ReVanced Manager downloader template is licensed under the GPLv3 licence.
+ReVanced Manager APK Sources Downloader is licensed under the GPLv3 license.
 Please see the [license file](LICENSE) for more information.
 [tl;dr](https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3) you may copy, distribute
-and modify ReVanced Manager downloader template as long as you track changes/dates in source files.
-Any modifications to ReVanced Manager downloader template must also be made available under the GPL,
+and modify ReVanced Manager APK Sources Downloader as long as you track changes/dates in source files.
+Any modifications to ReVanced Manager APK Sources Downloader must also be made available under the GPL,
 along with build & install instructions.

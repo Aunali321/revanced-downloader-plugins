@@ -7,10 +7,14 @@ plugins {
 
 dependencies {
     compileOnly(libs.plugin.api)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.jsoup)
 }
 
 android {
-    val packageName = "app.revanced.manager.plugin.downloader.example"
+    val packageName = "app.revanced.manager.plugin.downloader.apksources"
 
     namespace = packageName
     compileSdk = 35
