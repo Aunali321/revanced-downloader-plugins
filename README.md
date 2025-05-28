@@ -58,31 +58,43 @@
    Continuing the legacy of Vanced
 </p>
 
-# 🔍 ReVanced Manager APK Sources Downloader
+# 🔍 ReVanced Downloader Plugins
 
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/ReVanced/revanced-manager-downloader-template/release.yml)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/Aunali321/revanced-downloader-plugins/release.yml)
 ![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)
 
-A ReVanced Manager downloader plugin that fetches APKs from APKMirror, APKPure, and APKCombo.
+A collection of ReVanced Manager downloader plugins that fetch APKs from popular APK sources.
 
 ## ❓ About
 
-This is a ReVanced Manager downloader plugin that allows users to download APKs from multiple popular sources:
+This is a monorepo containing ReVanced Manager downloader plugins for fetching APKs from multiple popular sources. Each downloader is built as a separate module:
 
-- APKMirror
-- APKPure
-- APKCombo
+### 📦 Available Downloaders
 
-The plugin automatically tries each source in order until it finds a matching APK for the requested package name and version.
+- **🪞 APKMirror Downloader** (`apkmirror-downloader`) - Downloads from APKMirror.com
+- **🔵 APKPure Downloader** (`apkpure-downloader`) - Downloads from APKPure.net  
+- **🔴 APKCombo Downloader** (`apkcombo-downloader`) - Downloads from APKCombo.com
 
 ## 🚀 Features
 
-- **Multi-source support**: Fetches APKs from APKMirror, APKPure, and APKCombo
-- **Automatic fallback**: If one source fails, the plugin automatically tries the next source
-- **Version selection**: Supports downloading specific versions or the latest version
-- **Error handling**: Gracefully handles errors with appropriate error messages
-- **APK verification**: Verifies APK integrity after download
-- **Modular architecture**: Easy to add new sources in the future
+- **Single-source focus**: Each downloader specializes in one APK source
+- **Lightweight**: Minimal dependencies and clean implementation
+- **Reliable**: Based on the proven APKMirror downloader architecture
+- **Version support**: All support specific version downloads or latest version
+
+## 🏗️ Monorepo Structure
+
+```
+revanced-downloader-plugins/
+├── apkmirror-downloader/          # APKMirror-only downloader
+├── apkpure-downloader/            # APKPure-only downloader  
+├── apkcombo-downloader/           # APKCombo-only downloader
+├── build.gradle.kts               # Root build configuration
+├── settings.gradle.kts            # Module definitions
+└── .github/workflows/             # CI/CD for all modules
+```
+
+Each module produces its own APK plugin that can be installed independently in ReVanced Manager.
 
 ## 🧩 Implementation Details
 
@@ -112,10 +124,6 @@ The plugin automatically tries each source in order until it finds a matching AP
 - Implements coroutines for asynchronous operations
 - Provides download progress tracking
 
-[^1]: [Example README.md file](https://github.com/ReVanced/revanced-manager/blob/main/README.md)
-[^2]: [Example issue templates](https://github.com/ReVanced/revanced-manager/tree/main/.github/ISSUE_TEMPLATE)
-[^3]: [Example contribution guidelines](https://github.com/ReVanced/revanced-manager/blob/main/CONTRIBUTING.md)
-
 ## 🧑‍💻 Usage
 
 ### For Users
@@ -126,28 +134,13 @@ The plugin automatically tries each source in order until it finds a matching AP
 4. If a specific version is requested, the plugin will attempt to find that version
 5. The download will begin automatically once the APK is found
 
-### For Developers
-
-To extend this plugin with new sources:
-
-1. Implement the `APKSource` interface
-2. Add your new source to the sources list in `APKSourcesDownloader.kt`
-3. Ensure proper error handling and logging
-4. Follow the existing pattern for WebView navigation and download handling
-
-## 📚 Everything else
-
-### 📙 Contributing
-
-Thank you for considering contributing to ReVanced Manager downloader.  
-You can find the contribution guidelines [here](CONTRIBUTING.md).
 
 ### 🛠️ Building
 
-To build ReVanced Manager downloader template, a Java Development Kit (JDK) and Git must be installed.  
-Follow the steps below to build ReVanced Manager downloader template:
+To build ReVanced downloader plugins, a Java Development Kit (JDK) and Git must be installed.  
+Follow the steps below to build ReVanced downloader plugins:
 
-1. Run `git clone git@github.com:ReVanced/revanced-manager-downloader-template.git` to clone the repository
+1. Run `git clone git@github.com:Aunali321/revanced-downloader-plugins.git` to clone the repository
 2. Run `gradlew assembleRelease` to build the project
 
 > [!NOTE]
@@ -163,9 +156,9 @@ Follow the steps below to build ReVanced Manager downloader template:
 
 ## 📜 License
 
-ReVanced Manager APK Sources Downloader is licensed under the GPLv3 license.
+ReVanced Downloader Plugins is licensed under the GPLv3 license.
 Please see the [license file](LICENSE) for more information.
 [tl;dr](https://www.tldrlegal.com/license/gnu-general-public-license-v3-gpl-3) you may copy, distribute
-and modify ReVanced Manager APK Sources Downloader as long as you track changes/dates in source files.
-Any modifications to ReVanced Manager APK Sources Downloader must also be made available under the GPL,
+and modify ReVanced Downloader Plugins as long as you track changes/dates in source files.
+Any modifications to ReVanced Downloader Plugins must also be made available under the GPL,
 along with build & install instructions.

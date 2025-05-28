@@ -22,7 +22,7 @@
       {
         "assets": [
           "CHANGELOG.md",
-          "gradle.properties",
+          "gradle.properties"
         ],
         "message": "chore: Release v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
@@ -32,17 +32,26 @@
       {
         "assets": [
           {
-            "path": "build/outputs/apk/release/*.apk?(.asc)",
+            "path": "apkmirror-downloader/build/outputs/apk/release/*.apk?(.asc)",
+            "name": "apkmirror-downloader-${nextRelease.version}.apk"
+          },
+          {
+            "path": "apkpure-downloader/build/outputs/apk/release/*.apk?(.asc)",
+            "name": "apkpure-downloader-${nextRelease.version}.apk"
+          },
+          {
+            "path": "apkcombo-downloader/build/outputs/apk/release/*.apk?(.asc)",
+            "name": "apkcombo-downloader-${nextRelease.version}.apk"
           }
         ],
-        successComment: false
+        "successComment": false
       }
     ],
     [
       "@saithodev/semantic-release-backmerge",
       {
-        backmergeBranches: [{"from": "main", "to": "dev"}],
-        clearWorkspace: true
+        "backmergeBranches": [{"from": "main", "to": "dev"}],
+        "clearWorkspace": true
       }
     ]
   ]

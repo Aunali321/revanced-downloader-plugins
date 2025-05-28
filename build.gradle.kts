@@ -1,22 +1,25 @@
+import com.android.build.gradle.AppExtension
+import org.gradle.plugins.signing.SigningExtension
+
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    publishing
-    signing
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
 }
+
+subprojects {
+    apply(plugin = "com.android.application")
+    apply(plugin = "org.jetbrains.kotlin.android")
+    apply(plugin = "maven-publish")
+    apply(plugin = "signing")
 
 dependencies {
-    compileOnly(libs.plugin.api)
+        "compileOnly"(rootProject.libs.plugin.api)
 }
 
-android {
-    val packageName = "app.revanced.manager.plugin.downloader.apksources"
-
-    namespace = packageName
-    compileSdk = 35
+    configure<com.android.build.gradle.AppExtension> {
+        compileSdkVersion(35)
 
     defaultConfig {
-        applicationId = packageName
         minSdk = 26
         targetSdk = 35
         versionName = version.toString()
@@ -24,15 +27,14 @@ android {
     }
 
     buildTypes {
-        release {
+            getByName("release") {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                    "proguard-rules.pro"
             )
 
-            val keystoreFile = file("keystore.jks")
-            signingConfig =
-                if (keystoreFile.exists()) {
+                val keystoreFile = file("${rootDir}/keystore.jks")
+                signingConfig = if (keystoreFile.exists()) {
                     signingConfigs.create("release") {
                         storeFile = keystoreFile
                         storePassword = System.getenv("KEYSTORE_PASSWORD")
@@ -40,7 +42,7 @@ android {
                         keyPassword = System.getenv("KEYSTORE_ENTRY_PASSWORD")
                     }
                 } else {
-                    signingConfigs["debug"]
+                    signingConfigs.getByName("debug")
                 }
         }
     }
@@ -50,39 +52,37 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     applicationVariants.all {
         outputs.all {
             this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
-
-            outputFileName = "${rootProject.name}-$version.apk"
+                outputFileName = "${project.name}-$version.apk"
+            }
         }
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "17"
     }
 }
 
-tasks {
-    val assembleReleaseSignApk by registering {
+    tasks.register("assembleReleaseSignApk") {
         dependsOn("assembleRelease")
 
-        val apk = layout.buildDirectory.file("outputs/apk/release/${rootProject.name}-$version.apk")
+        val apk = layout.buildDirectory.file("outputs/apk/release/${project.name}-$version.apk")
 
         inputs.file(apk).withPropertyName("input")
         outputs.file(apk.map { it.asFile.resolveSibling("${it.asFile.name}.asc") })
 
         doLast {
-            signing {
+            project.configure<SigningExtension> {
                 useGpgCmd()
                 sign(*inputs.files.files.toTypedArray())
             }
         }
     }
 
-    // Used by gradle-semantic-release-plugin.
-    // Tracking: https://github.com/KengoTODA/gradle-semantic-release-plugin/issues/435.
-    publish {
-        dependsOn(assembleReleaseSignApk)
+    tasks.named("publish") {
+        dependsOn("assembleReleaseSignApk")
     }
 }
